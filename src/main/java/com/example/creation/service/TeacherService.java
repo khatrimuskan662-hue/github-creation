@@ -12,4 +12,5 @@ public interface TeacherService {
     public List<TeacherResponseDto> teacherList();
     public String deleteTeacher(int id);
     public TeacherResponseDto updateTeacher(int id,TeacherRequestDto teacherRequestDto);
+    public TeacherResponseDto getByID(int id);
 }

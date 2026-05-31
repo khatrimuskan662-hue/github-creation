@@ -1,8 +1,6 @@
 package com.example.creation.dto.response;
 
-import java.util.List;
-
-public record TeacherResponseDto(
+public record StudentResponseDto(
 
         int id,
 
@@ -10,12 +8,14 @@ public record TeacherResponseDto(
 
         String email,
 
-        String specialization,
+        String rollNumber,
 
         int facultyId,
 
         String facultyName,
 
-        List<String> subjects
+        int semesterId,
+
+        String semesterName
 ) {
 }

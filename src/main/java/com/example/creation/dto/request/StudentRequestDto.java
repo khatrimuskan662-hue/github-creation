@@ -1,10 +1,10 @@
 package com.example.creation.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
-
-public record TeacherRequestDto(
+public record StudentRequestDto(
         @NotBlank(message = "Name is required")
         String name,
 
@@ -14,13 +14,13 @@ public record TeacherRequestDto(
         @NotBlank(message = "Password is required")
         String password,
 
-        @NotBlank(message = "Specialization is required")
-        String specialization,
+        @NotBlank(message = "Roll number is required")
+        String rollNumber,
 
         @NotNull(message = "Faculty id is required")
         int facultyId,
 
-        @NotEmpty(message = "Subject ids are required")
-        List<Integer> subjectIds
+        @NotNull(message = "Semester id is required")
+        int semesterId
 ) {
 }

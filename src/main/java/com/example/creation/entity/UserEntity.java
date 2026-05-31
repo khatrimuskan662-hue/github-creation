@@ -27,7 +27,8 @@ public class UserEntity {
         @JsonIgnore
         private String password;
 
-        @Enumerated(EnumType.STRING)
+       @ManyToOne
+        @JoinColumn(name = "role_id")
         private Role role;
 
 

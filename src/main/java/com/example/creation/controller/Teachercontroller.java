@@ -33,7 +33,7 @@ public class Teachercontroller {
     private final TeacherMapper teacherMapper;
 
    @PostMapping("/save")
-   @PreAuthorize("hasRole('ADMIN')")
+   @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<TeacherResponseDto>> save(@Valid @RequestBody TeacherRequestDto teacherRequestDto){
 
         TeacherResponseDto savedTeacher = teacherService.saveTeacher(teacherRequestDto);
@@ -48,7 +48,7 @@ public class Teachercontroller {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
    }
 
-   @GetMapping("/{id}")
+   @GetMapping
    public ResponseEntity<ApiResponse<List<TeacherResponseDto>>> getallTeacher(){
 
        List<TeacherResponseDto> teachers = teacherService.teacherList();
@@ -64,7 +64,7 @@ public class Teachercontroller {
     }
 
    @DeleteMapping("/delete/{id}")
-   @PreAuthorize("hasRole('ADMIN')")
+   @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteById(@PathVariable int id){
        teacherService.deleteTeacher(id);
        ApiResponse<String> response =
@@ -78,7 +78,7 @@ public class Teachercontroller {
    }
 
    @PutMapping("/update/{id}")
-   @PreAuthorize("hasRole('ADMIN')")
+   @PreAuthorize("hasAuthority('ADMIN')")
    public ResponseEntity<ApiResponse<TeacherResponseDto>> updateTeacher(@PathVariable int id,@Valid @RequestBody TeacherRequestDto teacherRequestDto) {
        TeacherResponseDto updateTeacher=teacherService.updateTeacher(id,teacherRequestDto);
        ApiResponse<TeacherResponseDto> response =
@@ -91,4 +91,23 @@ public class Teachercontroller {
        return ResponseEntity.ok(response);
 
 
-}}
+}
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ApiResponse<TeacherResponseDto>>
+    getTeacherById(
+            @PathVariable int id
+    ) {
+
+        TeacherResponseDto teacher =
+                teacherService.getByID(id);
+
+        ApiResponse<TeacherResponseDto> response =
+                new ApiResponse<>(
+                        true,
+                        "Teacher fetched successfully",
+                        teacher
+                );
+
+        return ResponseEntity.ok(response);
+    }}
