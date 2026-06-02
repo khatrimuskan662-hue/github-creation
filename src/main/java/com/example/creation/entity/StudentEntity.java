@@ -14,8 +14,6 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String rollNumber;
-
     @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -27,4 +25,8 @@ public class StudentEntity {
     @ManyToOne
     @JoinColumn(name = "semester_id")
     private SemesterEntity semester;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private SubjectEntity subject;
 }

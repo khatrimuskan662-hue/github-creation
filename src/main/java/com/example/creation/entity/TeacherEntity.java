@@ -18,6 +18,10 @@ public class TeacherEntity {
 
     private String specialization;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;

@@ -25,17 +25,14 @@ public class StudentServiceImpl implements StudentService{
     private final UserMapper userMapper;
     private final StudentMapper studentMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final SubjectRepository subjectRepository;
     @Override
     public StudentResponseDto createStudent(StudentRequestDto studentRequestDto) {
-       boolean rollExists=studentRepository.existsByRollNumber(studentRequestDto.rollNumber());
-       if(rollExists){
-           throw new ResourseAlreadyExistException("roll number already exist");
 
-       }
-       boolean emailExist=userRepository.findByEmail(studentRequestDto.email()).isPresent();
-       if(emailExist){
-           throw new ResourseAlreadyExistException("email already exist");
-       }
+        SubjectEntity subject=subjectRepository.findById(studentRequestDto.subjectId()).orElseThrow(()->
+                new ResoursenotFoundException(
+                        "subject not found"
+                ));
         FacultyEntity faculty=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(() -> new ResoursenotFoundException(
                 "faculty not found"
         ));
@@ -46,16 +43,18 @@ public class StudentServiceImpl implements StudentService{
                 "role not found"
         ));
         UserEntity user=userMapper.toEntity(studentRequestDto);
-        user.setPassword(bCryptPasswordEncoder.encode(studentRequestDto.password()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         user.setRole(role);
 
         UserEntity saveUser=userRepository.save(user);
         StudentEntity studentEntity=new StudentEntity();
-        studentEntity.setRollNumber(studentRequestDto.rollNumber());
+        //studentEntity.setRollNumber(studentRequestDto.rollNumber());
         studentEntity.setUser(saveUser);
-        studentEntity.setFaculty(faculty);
+        studentEntity.setSubject(subject);
         studentEntity.setSemester(semester);
+        studentEntity.setFaculty(faculty);
+
 
         StudentEntity savestudent=studentRepository.save(studentEntity);
         return studentMapper.toResponseDto(savestudent);
@@ -92,19 +91,24 @@ public class StudentServiceImpl implements StudentService{
                 .orElseThrow(()-> new ResoursenotFoundException(
                         "semester not found"
                 ));
+        SubjectEntity subject=subjectRepository.findById(studentRequestDto.subjectId()).orElseThrow(()->
+                new ResoursenotFoundException(
+                        "subject not found"
+                ));
         UserEntity userEntity=studentEntity.getUser();
-        userEntity.setName(studentRequestDto.name());
-        userEntity.setEmail(studentRequestDto.email());
-        if(studentRequestDto.password()!=null&& !studentRequestDto.password().isBlank()){
-            userEntity.setPassword(
-                    bCryptPasswordEncoder.encode(studentRequestDto.password())
-            );
-        }
+        userEntity.setName(userEntity.getName());
+        userEntity.setEmail(userEntity.getEmail());
+
+                    //bCryptPasswordEncoder.encode(userEntity.setPassword(userEntity.getPassword());
+
         userRepository.save(userEntity);
 
-        studentEntity.setRollNumber(studentRequestDto.rollNumber());
+       // studentEntity.setRollNumber(studentRequestDto.rollNumber());
+        studentEntity.setUser(userEntity);
         studentEntity.setFaculty(facultyEntity);
         studentEntity.setSemester(semesterEntity);
+        studentEntity.setSubject(subject);
+
 
         StudentEntity updateStudent=studentRepository.save(studentEntity);
         return studentMapper.toResponseDto(updateStudent);

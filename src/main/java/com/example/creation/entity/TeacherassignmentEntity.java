@@ -4,22 +4,20 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
-public class Role {
+public class TeacherassignmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
-    private String roleName;
+    @ManyToOne
+    private TeacherEntity teacher;
 
-    @OneToMany
-    private List<UserEntity> user;
+    @ManyToOne
+    private SubjectEntity subject;
 
-    @OneToMany
-    private List<TeacherEntity> teacher;
+    @ManyToOne
+    private SemesterEntity semester;
 }

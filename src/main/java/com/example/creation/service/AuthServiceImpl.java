@@ -33,15 +33,15 @@ public class AuthServiceImpl implements AuthService{
        if(emailExists){
            throw new ResourseAlreadyExistException("email already exist");
        }
-       //Role role=roleRepository.findByRoleName("ROLE_STUDENT").orElseThrow(() -> new ResoursenotFoundException(
-        //       "role not found"
-       //));
+       Role role=roleRepository.findByRoleName(dto.role()).orElseThrow(() -> new ResoursenotFoundException(
+               "role not found"
+       ));
        UserEntity user=new UserEntity();
        user.setName(dto.name());
        user.setEmail(dto.email());
        user.setPassword(bCryptPasswordEncoder.encode(dto.password()));
-       Role role=new Role();
-       //user.setRole(role);
+       Role role1=new Role();
+       user.setRole(role);
        userRepository.save(user);
 
         return "User registered successfully";

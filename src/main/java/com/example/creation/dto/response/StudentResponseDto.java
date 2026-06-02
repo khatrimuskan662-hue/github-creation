@@ -3,12 +3,13 @@ package com.example.creation.dto.response;
 public record StudentResponseDto(
 
         int id,
+        int userId,
 
         String name,
 
         String email,
 
-        String rollNumber,
+        //String rollNumber,
 
         int facultyId,
 
@@ -16,6 +17,8 @@ public record StudentResponseDto(
 
         int semesterId,
 
-        String semesterName
+        String semesterName,
+
+        String subjectName
 ) {
 }
