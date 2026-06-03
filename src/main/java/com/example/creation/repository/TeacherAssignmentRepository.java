@@ -1,12 +1,9 @@
 package com.example.creation.repository;
 
-import com.example.creation.entity.SemesterEntity;
-import com.example.creation.entity.SubjectEntity;
-import com.example.creation.entity.TeacherEntity;
-import com.example.creation.entity.TeacherassignmentEntity;
+import com.example.creation.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TeacherAssignmentRepository extends JpaRepository<TeacherassignmentEntity,Integer> {
+public interface TeacherAssignmentRepository extends JpaRepository<TeacherassignmentEntitys,Integer> {
     boolean existsByTeacherAndSubjectAndSemester(
             TeacherEntity teacher,
             SubjectEntity subject,

@@ -5,7 +5,7 @@ public record SubjectResponseDto(
 
         String subjectName,
 
-        Long semesterId,
+        int semesterId,
 
         String semesterName
 ) {

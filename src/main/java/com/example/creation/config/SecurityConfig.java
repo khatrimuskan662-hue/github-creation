@@ -2,7 +2,6 @@ package com.example.creation.config;
 
 import com.example.creation.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,12 +9,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity//Allow @PreAuthorize
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -24,7 +22,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(
+    public AuthenticationManager authenticationManager( //used inside login
             AuthenticationConfiguration config
     ) throws Exception {
 
@@ -36,9 +34,10 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
 
-        http
+        http   //csrf->protection for browser forms
                 .csrf(csrf -> csrf.disable())
 
+                //Stateless session->no httpsession,no server session,JWT only
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
@@ -48,7 +47,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
+                                // /api/auth/register
+                                // /api/auth/login
+                                // no token needed
                                 "/api/auth/**"
+                                // else JWT required
                         ).permitAll()
 
                         .anyRequest().authenticated()

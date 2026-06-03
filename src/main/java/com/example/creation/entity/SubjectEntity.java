@@ -26,5 +26,5 @@ public class SubjectEntity {
     private SemesterEntity semester;
 
      @ManyToMany(mappedBy = "subjects")
-    private List<TeacherEntity> teacher;
+    private List<TeacherEntity> teachers;
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class GlobalExceptionhandler {
+public class GlobalExceptionhandler { //throw error for resourse not found
     @ExceptionHandler(ResoursenotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleResourceNotFound(
             ResoursenotFoundException ex
@@ -27,7 +27,7 @@ public class GlobalExceptionhandler {
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class) //validation
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(
             MethodArgumentNotValidException ex
     ) {
@@ -48,7 +48,7 @@ public class GlobalExceptionhandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(ResourseAlreadyExistException.class)
+    @ExceptionHandler(ResourseAlreadyExistException.class)// already exist error
     public ResponseEntity<ApiResponse<Object>>
     handleAlreadyExists(ResourseAlreadyExistException ex) {
 
@@ -62,6 +62,22 @@ public class GlobalExceptionhandler {
         return new ResponseEntity<>(
                 response,
                 HttpStatus.BAD_REQUEST
+        );
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Object>>
+    handleGeneralException(Exception ex){
+
+        ApiResponse<Object> response =
+                new ApiResponse<>(
+                        false,
+                        ex.getMessage(),
+                        null
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 }

@@ -17,7 +17,8 @@ public class Role {
     @Column(unique = true)
     private String roleName;
 
-    @OneToMany
+    @OneToMany(mappedBy = "role") //
+                        //userentity already owns relationship
     private List<UserEntity> user;
 
     @OneToMany

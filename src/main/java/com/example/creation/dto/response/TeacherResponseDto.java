@@ -14,8 +14,8 @@ public record TeacherResponseDto(
 
         int facultyId,
 
-        String facultyName,
+        String facultyName
 
-        List<String> subjects
+        //List<String> subjects
 ) {
 }

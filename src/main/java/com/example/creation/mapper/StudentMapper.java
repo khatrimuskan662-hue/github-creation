@@ -16,7 +16,7 @@ public interface StudentMapper {
     @Mapping(source = "faculty.facultyName", target = "facultyName")
     @Mapping(source = "semester.id", target = "semesterId")
     @Mapping(source = "semester.semesterName", target = "semesterName")
-    @Mapping(source = "subject.subjectName", target = "subjectName")
+   // @Mapping(source = "subject.subjectName", target = "subjectName")
     StudentResponseDto toResponseDto(
             StudentEntity entity
     );

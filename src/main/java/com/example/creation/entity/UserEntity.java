@@ -22,9 +22,10 @@ public class UserEntity {
 
         private String name;
 
+        @Column(unique = true)
         private String email;
 
-        @JsonIgnore
+        @JsonIgnore //don't appear in API response
         private String password;
 
        @ManyToOne

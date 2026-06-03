@@ -31,10 +31,10 @@ public class SemesterEntity {
 
     @OneToMany(mappedBy = "semester")
     @JsonManagedReference
-    private List<SubjectEntity> subject;
+    private List<SubjectEntity> subjects;
 
     @OneToMany(mappedBy = "semester")
-    private List<StudentEntity> student;
+    private List<StudentEntity> students;
 }
 
 

@@ -26,7 +26,7 @@ public class StudentEntity {
     @JoinColumn(name = "semester_id")
     private SemesterEntity semester;
 
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private SubjectEntity subject;
+   // @ManyToOne
+   // @JoinColumn(name = "subject_id")
+   // private SubjectEntity subject;
 }

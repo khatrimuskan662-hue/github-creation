@@ -30,34 +30,34 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherResponseDto saveTeacher(TeacherRequestDto teacherRequestDto) {
-        boolean exist = userRepository.existsByEmail(teacherRequestDto.specialization());
-        if (exist) {
-            throw new ResourseAlreadyExistException(
-                    "specialization already exist"
-            );
-        }
-           // FacultyEntity faculty =
-             //       facultyRepository.findById(
-               //             teacherRequestDto.facultyId()
-                 //   ).orElseThrow(() ->
-                   //         new ResoursenotFoundException(
-                     //               "Faculty not found"
-                       //     ));
-      //      List<SubjectEntity> subjects =
-        //            subjectRepository.findAllById(
-          //                  teacherRequestDto.subjectIds()
-            //        );
 
-            //if (subjects.isEmpty()) {
-              //  throw new ResoursenotFoundException(
-                //        "Subjects not found"
-                //);
-            //}
-           // if(subjects.size()!=teacherRequestDto.subjectIds().size()){
-             //   throw new ResoursenotFoundException(
-               //         "some subject not found"
-                //);
-           // }
+            if(userRepository.existsByEmail(teacherRequestDto.email())){
+                throw new ResoursenotFoundException(
+                        "email already exist"
+                );
+            }
+            FacultyEntity faculty =
+                    facultyRepository.findById(
+                            teacherRequestDto.facultyId()
+                    ).orElseThrow(() ->
+                            new ResoursenotFoundException(
+                                    "Faculty not found"
+                          ));
+            List<SubjectEntity> subjects =
+                    subjectRepository.findAllById(
+                            teacherRequestDto.subjectIds()
+                    );
+
+            if (subjects.isEmpty()) {
+                throw new ResoursenotFoundException(
+                        "Subjects not found"
+                );
+            }
+            if(subjects.size()!=teacherRequestDto.subjectIds().size()){
+                throw new ResoursenotFoundException(
+                        "some subject not found"
+                );
+            }
             Role role = roleRepository.findByRoleName("TEACHER")
                     .orElseThrow(() -> new ResoursenotFoundException(
                             "role not found"
@@ -66,7 +66,9 @@ public class TeacherServiceImpl implements TeacherService {
             UserEntity user =
                     new UserEntity();
 
-            user.setName(teacherRequestDto.specialization());
+            user.setName(teacherRequestDto.name());
+            user.setEmail(teacherRequestDto.email());
+            user.setPassword(bCryptPasswordEncoder.encode(teacherRequestDto.password()));
 
             user.setRole(role);
 
@@ -81,13 +83,13 @@ public class TeacherServiceImpl implements TeacherService {
             teacher.setSpecialization(
                     teacherRequestDto.specialization()
             );
-            teacher.setRole(role);
+            //teacher.setRole(role);
 
             teacher.setUser(savedUser);
 
-           // teacher.setFaculty(faculty);
+            teacher.setFaculty(faculty);
 
-            //teacher.setSubjects(subjects);
+            teacher.setSubjects(subjects);
 
             TeacherEntity savedTeacher =
                     teacherRepository.save(teacher);
@@ -118,7 +120,8 @@ public List<TeacherResponseDto> teacherList() {
     }
 
     @Override
-    public TeacherResponseDto updateTeacher(int id, TeacherRequestDto teacherRequestDto) {
+    public TeacherResponseDto updateTeacher(int id, TeacherRequestDto teacherRequestDto)
+    {
 
         TeacherEntity teacher =
                 teacherRepository.findById(id)
@@ -127,54 +130,44 @@ public List<TeacherResponseDto> teacherList() {
                                         "Teacher not found"
                                 ));
 
-        //FacultyEntity faculty =
-          //      facultyRepository.findById(
-           //             teacherRequestDto.facultyId()
-             //   ).orElseThrow(() ->
-               //         new ResoursenotFoundException(
-                 //               "Faculty not found"
-                 //       ));
+        FacultyEntity faculty =
+                facultyRepository.findById(
+                        teacherRequestDto.facultyId()
+                ).orElseThrow(() ->
+                       new ResoursenotFoundException(
+                                "Faculty not found"
+                        ));
 
-        //List<SubjectEntity> subjects =
-          //      subjectRepository.findAllById(
-            //            teacherRequestDto.subjectIds()
-              //  );
-        //if (subjects.size() != teacherRequestDto.subjectIds().size()) {
-          //  throw new ResoursenotFoundException(
-            //        "Some subjects not found"
-            //);
-        //}
+        List<SubjectEntity> subjects =
+                subjectRepository.findAllById(
+                        teacherRequestDto.subjectIds()
+               );
+        if (subjects.size() != teacherRequestDto.subjectIds().size()) {
+            throw new ResoursenotFoundException(
+                    "Some subjects not found"
+            );
+        }
+        Role role=roleRepository.findByRoleName("TEACHER")
+                .orElseThrow(()-> new ResoursenotFoundException(
+                        "role not found"
+                ));
 
-        UserEntity user =
-                teacher.getUser();
-
-        user.setName(user.getName());
-
-        user.setEmail(user.getEmail());
-
-        user.setPassword(
-               bCryptPasswordEncoder.encode(
-                       user.getPassword()
-                )
-        );
-
-        userRepository.save(user);
-
-        teacher.setSpecialization(
-                teacherRequestDto.specialization()
-        );
-
-       // teacher.setFaculty(faculty);
-
-        //teacher.setSubjects(subjects);
-
-        TeacherEntity updatedTeacher =
-                teacherRepository.save(teacher);
-
-        return teacherMapper
-                .toResponseDto(updatedTeacher);
+       UserEntity user=new UserEntity();
+       user.setName(teacherRequestDto.name());
+       user.setEmail(teacherRequestDto.email());
+       if(teacherRequestDto.password()!=null && !teacherRequestDto.password().isBlank()) {
 
 
+        user.setPassword(bCryptPasswordEncoder.encode(
+                teacherRequestDto.password()
+        ));
+    }
+       userRepository.save(user);
+      teacher.setSpecialization((teacherRequestDto.specialization()));
+      teacher.setFaculty(faculty);
+      teacher.setSubjects(subjects);
+      TeacherEntity updateTeacher=teacherRepository.save(teacher);
+      return teacherMapper.toResponseDto(updateTeacher);
     }
 
     @Override

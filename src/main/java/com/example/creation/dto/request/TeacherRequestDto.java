@@ -5,25 +5,22 @@ import jakarta.validation.constraints.*;
 import java.util.List;
 
 public record TeacherRequestDto(
-        //@NotBlank(message = "Name is required")
-        //String name,
+        @NotBlank(message = "Name is required")
+        String name,
 
-        //@Email(message = "Invalid email")
-        //String email,
+        @Email(message = "Invalid email")
+        String email,
 
-        //@NotBlank(message = "Password is required")
-        //String password,
+        @NotBlank(message = "Password is required")
+        String password,
 
         @NotBlank(message = "Specialization is required")
-        String specialization
+        String specialization,
 
-       // @NotNull(message = "Faculty id is required")
-        //int facultyId,
+        @NotNull(message = "Faculty id is required")
+        Integer facultyId,
 
-        //@NotNull(message = "semester ids are required")
-        //List<Integer> semesterIds,
-
-        //@NotEmpty(message = "Subject ids are required")
-        //List<Integer> subjectIds
+        @NotEmpty(message = "Subject ids are required")
+        List<Integer> subjectIds
 ) {
 }

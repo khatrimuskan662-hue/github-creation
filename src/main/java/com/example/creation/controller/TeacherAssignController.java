@@ -7,10 +7,9 @@ import com.example.creation.service.TeacherAssignService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/teacher-assign")
@@ -34,4 +33,38 @@ public class TeacherAssignController {
               );
        return ResponseEntity.ok(response);
     }
-}
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<TeacherAssignResponseDto>>>
+    getAllAssign(){
+        List<TeacherAssignResponseDto> responseDto=
+                teacherAssignService.getAllAssignments();
+        ApiResponse<List<TeacherAssignResponseDto>> response=
+                new ApiResponse<>(
+                        true,
+                        "assignmment fetched successful",
+                        responseDto
+                );
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<TeacherAssignResponseDto>>
+    getAssignById(@PathVariable int id){
+        TeacherAssignResponseDto responseDto=
+                teacherAssignService.getAssignmentById(id);
+        ApiResponse<TeacherAssignResponseDto> response=
+                new ApiResponse<>(
+                        true,
+                        "assignment fetched with id",
+                        responseDto
+                );
+        return ResponseEntity.ok(response);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAssign(@PathVariable int id){
+            teacherAssignService.deleteAssignment(id);
+    }
+    }

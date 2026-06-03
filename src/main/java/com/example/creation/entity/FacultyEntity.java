@@ -15,17 +15,17 @@ public class FacultyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
+    @Column(unique = true)//prevents duplicate
     private String facultyName;
 
     @OneToMany(mappedBy = "faculty")
-    @JsonManagedReference
-    private List<SemesterEntity> semester;
+    @JsonManagedReference //
+    private List<SemesterEntity> semesters;
 
     @OneToMany(mappedBy = "faculty")
-    private List<TeacherEntity> teacher;
+    private List<TeacherEntity> teachers;
 
     @OneToMany(mappedBy = "faculty")
-    private List<StudentEntity> student;
+    private List<StudentEntity> students;
 
 }

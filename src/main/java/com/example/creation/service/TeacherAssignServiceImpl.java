@@ -2,10 +2,7 @@ package com.example.creation.service;
 
 import com.example.creation.dto.request.TeacherAssignRequestDto;
 import com.example.creation.dto.response.TeacherAssignResponseDto;
-import com.example.creation.entity.SemesterEntity;
-import com.example.creation.entity.SubjectEntity;
-import com.example.creation.entity.TeacherEntity;
-import com.example.creation.entity.TeacherassignmentEntity;
+import com.example.creation.entity.*;
 import com.example.creation.exception.ResourseAlreadyExistException;
 import com.example.creation.exception.ResoursenotFoundException;
 import com.example.creation.mapper.TeacherAssignMapper;
@@ -15,6 +12,8 @@ import com.example.creation.repository.TeacherAssignmentRepository;
 import com.example.creation.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
                 new ResoursenotFoundException(
                         "Subject not found"
                 ));
-        TeacherassignmentEntity teacherassignment=new TeacherassignmentEntity();
+        TeacherassignmentEntitys teacherassignment=new TeacherassignmentEntitys();
         teacherassignment.setTeacher(teacher);
         teacherassignment.setSemester(semester);
         teacherassignment.setSubject(subject);
@@ -50,8 +49,31 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
                     "Teacher already assigned"
             );
         }
-        TeacherassignmentEntity teacherassign=
+        TeacherassignmentEntitys teacherassign=
                 teacherAssignmentRepository.save(teacherassignment);
         return teacherAssignMapper.toResponseDto(teacherassign);
+    }
+
+    @Override
+    public List<TeacherAssignResponseDto> getAllAssignments() {
+        return teacherAssignmentRepository.findAll()
+                .stream().map(teacherAssignMapper::toResponseDto).toList();
+    }
+
+    @Override
+    public TeacherAssignResponseDto getAssignmentById(int id) {
+        TeacherassignmentEntitys getAssign=
+        teacherAssignmentRepository.findById(id).orElseThrow(()->
+                new ResoursenotFoundException("assignment not found"));
+        return teacherAssignMapper.toResponseDto(getAssign);
+    }
+
+    @Override
+    public void deleteAssignment(int id) {
+        TeacherassignmentEntitys deleteAssign=teacherAssignmentRepository
+                .findById(id).orElseThrow(()->
+                        new ResoursenotFoundException("Assignment not found"));
+        teacherAssignmentRepository.delete(deleteAssign);
+
     }
 }

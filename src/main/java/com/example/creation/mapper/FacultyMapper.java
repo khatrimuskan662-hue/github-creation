@@ -10,11 +10,11 @@ import org.mapstruct.Mapping;
 public interface FacultyMapper {
     @Mapping(target = "id", ignore = true)
 
-    @Mapping(target = "semester", ignore = true)
+    @Mapping(target = "semesters", ignore = true)
 
-    @Mapping(target = "teacher", ignore = true)
+    @Mapping(target = "teachers", ignore = true)
 
-    @Mapping(target = "student", ignore = true)
+    @Mapping(target = "students", ignore = true)
     FacultyEntity toEntity(FacultyRequestDto facultyRequestDto);
     FacultyResponseDto toResponse(FacultyEntity facultyEntity);
 }

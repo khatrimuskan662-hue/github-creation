@@ -1,5 +1,6 @@
 package com.example.creation.dto.request;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,6 +10,7 @@ public record SubjectRequestDto(
         String subjectName,
 
         @NotNull(message = "Semester id is required")
+        @Min(1)
         int semesterId
 ) {
 }

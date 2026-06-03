@@ -40,7 +40,6 @@ public class AuthServiceImpl implements AuthService{
        user.setName(dto.name());
        user.setEmail(dto.email());
        user.setPassword(bCryptPasswordEncoder.encode(dto.password()));
-       Role role1=new Role();
        user.setRole(role);
        userRepository.save(user);
 

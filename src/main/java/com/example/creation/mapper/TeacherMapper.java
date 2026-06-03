@@ -20,14 +20,14 @@ public interface TeacherMapper {
             target = "facultyName"
     )
 
-    @Mapping(
-            target = "subjects",
-            expression =
-                    "java(entity.getSubjects()" +
-                            ".stream()" +
-                            ".map(subject -> subject.getSubjectName())" +
-                            ".toList())"
-    )
+   // @Mapping(
+     //       target = "subject",
+       //     expression =
+         //           "java(entity.getSubject()" +
+           //                 ".stream()" +
+             //               ".map(subject -> subject.getSubjectName())" +
+               //             ".toList())"
+    //)
 
     TeacherResponseDto toResponseDto(
             TeacherEntity entity

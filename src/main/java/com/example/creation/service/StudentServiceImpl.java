@@ -29,10 +29,10 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public StudentResponseDto createStudent(StudentRequestDto studentRequestDto) {
 
-        SubjectEntity subject=subjectRepository.findById(studentRequestDto.subjectId()).orElseThrow(()->
-                new ResoursenotFoundException(
-                        "subject not found"
-                ));
+       // SubjectEntity subject=subjectRepository.findById(studentRequestDto.).orElseThrow(()->
+         //       new ResoursenotFoundException(
+           //             "subject not found"
+             //   ));
         FacultyEntity faculty=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(() -> new ResoursenotFoundException(
                 "faculty not found"
         ));
@@ -51,7 +51,7 @@ public class StudentServiceImpl implements StudentService{
         StudentEntity studentEntity=new StudentEntity();
         //studentEntity.setRollNumber(studentRequestDto.rollNumber());
         studentEntity.setUser(saveUser);
-        studentEntity.setSubject(subject);
+        //studentEntity.setSubjects(subject);
         studentEntity.setSemester(semester);
         studentEntity.setFaculty(faculty);
 
@@ -91,10 +91,10 @@ public class StudentServiceImpl implements StudentService{
                 .orElseThrow(()-> new ResoursenotFoundException(
                         "semester not found"
                 ));
-        SubjectEntity subject=subjectRepository.findById(studentRequestDto.subjectId()).orElseThrow(()->
-                new ResoursenotFoundException(
-                        "subject not found"
-                ));
+        //SubjectEntity subject=subjectRepository.findById(studentRequestDto.).orElseThrow(()->
+          //      new ResoursenotFoundException(
+            //            "subject not found"
+              //  ));
         UserEntity userEntity=studentEntity.getUser();
         userEntity.setName(userEntity.getName());
         userEntity.setEmail(userEntity.getEmail());
@@ -107,7 +107,7 @@ public class StudentServiceImpl implements StudentService{
         studentEntity.setUser(userEntity);
         studentEntity.setFaculty(facultyEntity);
         studentEntity.setSemester(semesterEntity);
-        studentEntity.setSubject(subject);
+       // studentEntity.setSubjects(subject);
 
 
         StudentEntity updateStudent=studentRepository.save(studentEntity);

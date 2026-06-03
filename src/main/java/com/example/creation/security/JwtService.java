@@ -23,7 +23,8 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email) //generate and return token
+    {
 
         return Jwts.builder()
                 .setSubject(email)
@@ -35,7 +36,8 @@ public class JwtService {
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public String extractEmail(String token)//extract email from token
+    {
 
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())

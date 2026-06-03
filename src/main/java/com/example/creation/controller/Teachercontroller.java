@@ -49,6 +49,7 @@ public class Teachercontroller {
    }
 
    @GetMapping
+   @PreAuthorize("hasAuthority('ADMIN')")
    public ResponseEntity<ApiResponse<List<TeacherResponseDto>>> getallTeacher(){
 
        List<TeacherResponseDto> teachers = teacherService.teacherList();
