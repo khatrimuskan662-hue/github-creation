@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class TeacherassignmentEntitys {
+public class TeacherassignmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -15,6 +15,11 @@ public class TeacherassignmentEntitys {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private TeacherEntity teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private FacultyEntity faculty;
+
 
     @ManyToOne
     @JoinColumn(name = "subject_id")

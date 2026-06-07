@@ -26,5 +26,6 @@ public class SubjectEntity {
     private SemesterEntity semester;
 
      @ManyToMany(mappedBy = "subjects")
+    // @JoinColumn(name = "teacherId")
     private List<TeacherEntity> teachers;
 }

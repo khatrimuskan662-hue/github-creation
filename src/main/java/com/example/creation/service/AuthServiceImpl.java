@@ -7,6 +7,7 @@ import com.example.creation.entity.Role;
 import com.example.creation.entity.UserEntity;
 import com.example.creation.exception.ResourseAlreadyExistException;
 import com.example.creation.exception.ResoursenotFoundException;
+import com.example.creation.mapper.UserMapper;
 import com.example.creation.repository.RoleRepository;
 import com.example.creation.repository.UserRepository;
 import com.example.creation.security.JwtService;
@@ -23,6 +24,7 @@ public class AuthServiceImpl implements AuthService{
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtService jwtService;

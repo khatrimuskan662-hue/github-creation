@@ -58,6 +58,7 @@ public class TeacherServiceImpl implements TeacherService {
                         "some subject not found"
                 );
             }
+
             Role role = roleRepository.findByRoleName("TEACHER")
                     .orElseThrow(() -> new ResoursenotFoundException(
                             "role not found"

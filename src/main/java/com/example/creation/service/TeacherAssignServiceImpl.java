@@ -6,10 +6,7 @@ import com.example.creation.entity.*;
 import com.example.creation.exception.ResourseAlreadyExistException;
 import com.example.creation.exception.ResoursenotFoundException;
 import com.example.creation.mapper.TeacherAssignMapper;
-import com.example.creation.repository.SemesterRepository;
-import com.example.creation.repository.SubjectRepository;
-import com.example.creation.repository.TeacherAssignmentRepository;
-import com.example.creation.repository.TeacherRepository;
+import com.example.creation.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +21,16 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
     private final SubjectRepository subjectRepository;
     private final TeacherAssignmentRepository teacherAssignmentRepository;
     private final TeacherAssignMapper teacherAssignMapper;
+    private final FacultyRepository facultyRepository;
     @Override
     public TeacherAssignResponseDto assignTeacher(TeacherAssignRequestDto requestDto) {
         TeacherEntity teacher=teacherRepository.findById(requestDto.teacherId()).orElseThrow(()->
                 new ResoursenotFoundException(
                         "Teacher not found"
+                ));
+        FacultyEntity faculty=facultyRepository.findById(requestDto.facultyId()).orElseThrow(()->
+                new ResoursenotFoundException(
+                        "faculty not found"
                 ));
         SemesterEntity semester=semesterRepository.findById(requestDto.semesterId()).orElseThrow(()->
                 new ResoursenotFoundException(
@@ -38,18 +40,19 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
                 new ResoursenotFoundException(
                         "Subject not found"
                 ));
-        TeacherassignmentEntitys teacherassignment=new TeacherassignmentEntitys();
+        TeacherassignmentEntity teacherassignment=new TeacherassignmentEntity();
         teacherassignment.setTeacher(teacher);
+        teacherassignment.setFaculty(faculty);
         teacherassignment.setSemester(semester);
         teacherassignment.setSubject(subject);
-        if(teacherAssignmentRepository.existsByTeacherAndSubjectAndSemester(
-                teacher,subject,semester
+        if(teacherAssignmentRepository.existsByTeacherAndFacultyAndSubjectAndSemester(
+                teacher,subject,semester,faculty
         )){
             throw new ResourseAlreadyExistException(
                     "Teacher already assigned"
             );
         }
-        TeacherassignmentEntitys teacherassign=
+        TeacherassignmentEntity teacherassign=
                 teacherAssignmentRepository.save(teacherassignment);
         return teacherAssignMapper.toResponseDto(teacherassign);
     }
@@ -62,7 +65,7 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
 
     @Override
     public TeacherAssignResponseDto getAssignmentById(int id) {
-        TeacherassignmentEntitys getAssign=
+        TeacherassignmentEntity getAssign=
         teacherAssignmentRepository.findById(id).orElseThrow(()->
                 new ResoursenotFoundException("assignment not found"));
         return teacherAssignMapper.toResponseDto(getAssign);
@@ -70,7 +73,7 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
 
     @Override
     public void deleteAssignment(int id) {
-        TeacherassignmentEntitys deleteAssign=teacherAssignmentRepository
+        TeacherassignmentEntity deleteAssign=teacherAssignmentRepository
                 .findById(id).orElseThrow(()->
                         new ResoursenotFoundException("Assignment not found"));
         teacherAssignmentRepository.delete(deleteAssign);

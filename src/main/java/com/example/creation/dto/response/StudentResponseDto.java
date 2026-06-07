@@ -17,8 +17,8 @@ public record StudentResponseDto(
 
         int semesterId,
 
-        String semesterName,
+        String semesterName
 
-        String subjectName
+       // String subjectName
 ) {
 }
