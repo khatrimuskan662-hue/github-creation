@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +28,11 @@ public class StudentEntity {
     @JoinColumn(name = "semester_id")
     private SemesterEntity semester;
 
-   // @ManyToOne
-   // @JoinColumn(name = "subject_id")
-   // private SubjectEntity subject;
+    @ManyToMany
+    @JoinTable(
+            name = "student_subjects",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<SubjectEntity> subjects;
 }

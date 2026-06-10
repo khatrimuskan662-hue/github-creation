@@ -10,12 +10,12 @@ public record SubjectRequestDto(
         String subjectName,
 
 
-        @NotNull(message = "Semester id is required")
-        @Min(1)
-        int facultyId,
+        //@NotNull(message = "Semester id is required")
+        //@Min(1)
+        //int facultyId,
 
         @NotNull(message = "Semester id is required")
-        @Min(1)
+        @Min(value = 1)
         int semesterId
 ) {
 }

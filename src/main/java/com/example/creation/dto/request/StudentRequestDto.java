@@ -4,21 +4,26 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 public record StudentRequestDto(
 
-        @NotBlank
+        @NotBlank(message = "Name is required")
         String name,
 
-        @Email
+        @Email(message = "Invalid email")
+        @NotBlank(message = "Email is required")
         String email,
 
-        @NotBlank
+        @NotBlank(message = "Password is required")
         String password,
 
-        @NotNull
+        @NotNull(message = "Faculty id is required")
         Integer facultyId,
 
-        @NotNull
-        Integer semesterId
+        @NotNull(message = "Semester id is required")
+        Integer semesterId,
+
+        List<Integer>subjectIds
 ) {
 }

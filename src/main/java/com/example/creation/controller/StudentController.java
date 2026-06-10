@@ -21,7 +21,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StudentResponseDto>> createStudent(@Valid @RequestBody StudentRequestDto studentRequestDto){
         StudentResponseDto studentResponseDto=studentService.createStudent(studentRequestDto);
         ApiResponse<StudentResponseDto> response=
@@ -34,7 +34,7 @@ public class StudentController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<StudentResponseDto>>> getAllStudent(){
         List<StudentResponseDto> studentResponseDtoList=studentService.getAllStudent();
 
@@ -47,7 +47,7 @@ public class StudentController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StudentResponseDto>>
     getStudentById(
             @PathVariable int id
@@ -66,7 +66,7 @@ public class StudentController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StudentResponseDto>>
     updateStudent(
             @PathVariable int id,
@@ -86,7 +86,7 @@ public class StudentController {
         return ResponseEntity.ok(response);
     }
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Object>>
     deleteStudent(
             @PathVariable int id

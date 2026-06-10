@@ -7,20 +7,16 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TeacherAssignMapper {
+    @Mapping(source = "id", target = "id")
+
     @Mapping(source = "teacher.id", target = "teacherId")
-    @Mapping(
-            expression = "java(entity.getTeacher().getUser().getName())",
-            target = "teacherName"
-    )
+    @Mapping(source = "teacher.user.name", target = "teacherName")
 
     @Mapping(source = "subject.id", target = "subjectId")
     @Mapping(source = "subject.subjectName", target = "subjectName")
 
     @Mapping(source = "semester.id", target = "semesterId")
     @Mapping(source = "semester.semesterName", target = "semesterName")
-
-    @Mapping(source = "faculty.id", target = "facultyId")
-    @Mapping(source = "faculty.facultyName", target = "facultyName")
     TeacherAssignResponseDto toResponseDto(TeacherassignmentEntity entity);
 }
 

@@ -47,11 +47,23 @@ public class JwtService {
 
         return claims.getSubject();
     }
+    private boolean isTokenExpired(String token) {
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getExpiration()
+                .before(new Date());
+    }
 
     public boolean isTokenValid(String token, String email) {
 
         String extractedEmail = extractEmail(token);
 
-        return extractedEmail.equals(email);
+        return extractedEmail.equals(email)
+                && !isTokenExpired(token);
     }
 }

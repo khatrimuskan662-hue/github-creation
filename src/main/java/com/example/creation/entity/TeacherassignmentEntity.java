@@ -16,9 +16,9 @@ public class TeacherassignmentEntity {
     @JoinColumn(name = "teacher_id")
     private TeacherEntity teacher;
 
-    @ManyToOne
-    @JoinColumn(name = "faculty_id")
-    private FacultyEntity faculty;
+   // @ManyToOne
+    //@JoinColumn(name = "faculty_id")
+    //private FacultyEntity faculty;
 
 
     @ManyToOne

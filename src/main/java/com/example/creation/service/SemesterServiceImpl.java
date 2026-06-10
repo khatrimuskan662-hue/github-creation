@@ -4,8 +4,8 @@ import com.example.creation.dto.request.SemesterrequestDto;
 import com.example.creation.dto.response.SemesterResponseDto;
 import com.example.creation.entity.FacultyEntity;
 import com.example.creation.entity.SemesterEntity;
-import com.example.creation.exception.ResourseAlreadyExistException;
-import com.example.creation.exception.ResoursenotFoundException;
+import com.example.creation.exception.ResourceNotFoundException;
+import com.example.creation.exception.ResourceAlreadyExistsException;
 import com.example.creation.mapper.SemesterMapper;
 import com.example.creation.repository.FacultyRepository;
 import com.example.creation.repository.SemesterRepository;
@@ -25,14 +25,14 @@ public class SemesterServiceImpl implements SemesterService{
     @Override
     public SemesterResponseDto createSemester(SemesterrequestDto semesterrequestDto) {
         FacultyEntity faculty=facultyRepository.findById(semesterrequestDto.facultyId()).orElseThrow(() ->
-                new ResoursenotFoundException("faculty not found"));
+                new ResourceNotFoundException("faculty not found"));
         boolean exists =
                 semesterRepository.
-                        existsBySemesterNameAndFaculty_id(
+                        existsBySemesterNameAndFaculty_Id(
                                 semesterrequestDto.semesterName(), semesterrequestDto.facultyId()
                         );
         if (exists){
-            throw new ResourseAlreadyExistException(
+            throw new ResourceAlreadyExistsException(
                     "Semester already exist "
             );
         }
@@ -40,7 +40,6 @@ public class SemesterServiceImpl implements SemesterService{
         semester.setSemesterName(semesterrequestDto.semesterName());
         semester.setFaculty(faculty);
         SemesterEntity saveSemester=semesterRepository.save(semester);
-
         return semesterMapper.toResponseDto(saveSemester);
 
     }
@@ -63,7 +62,7 @@ public class SemesterServiceImpl implements SemesterService{
         SemesterEntity semester =
                 semesterRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Semester not found"
                                 ));
 
@@ -80,7 +79,7 @@ public class SemesterServiceImpl implements SemesterService{
         SemesterEntity semester =
                 semesterRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Semester not found"
                                 ));
 
@@ -88,7 +87,7 @@ public class SemesterServiceImpl implements SemesterService{
                 facultyRepository.findById(
                         dto.facultyId()
                 ).orElseThrow(() ->
-                        new ResoursenotFoundException(
+                        new ResourceAlreadyExistsException(
                                 "Faculty not found"
                         ));
 
@@ -113,7 +112,7 @@ public class SemesterServiceImpl implements SemesterService{
         SemesterEntity semester =
                 semesterRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Semester not found"
                                 ));
 

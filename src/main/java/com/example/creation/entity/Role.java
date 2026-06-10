@@ -14,13 +14,13 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
+    @Column(unique = true,nullable = false)
     private String roleName;
 
     @OneToMany(mappedBy = "role") //
                         //userentity already owns relationship
     private List<UserEntity> user;
 
-    @OneToMany
-    private List<TeacherEntity> teacher;
+    //@OneToMany
+    //private List<TeacherEntity> teacher;
 }

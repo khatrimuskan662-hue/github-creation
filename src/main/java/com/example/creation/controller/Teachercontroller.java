@@ -3,21 +3,17 @@ package com.example.creation.controller;
 import com.example.creation.dto.request.TeacherRequestDto;
 import com.example.creation.dto.response.ApiResponse;
 import com.example.creation.dto.response.TeacherResponseDto;
-import com.example.creation.entity.TeacherEntity;
-import com.example.creation.exception.ResoursenotFoundException;
 import com.example.creation.mapper.TeacherMapper;
 import com.example.creation.repository.TeacherRepository;
 import com.example.creation.service.TeacherService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,7 +29,7 @@ public class Teachercontroller {
     private final TeacherMapper teacherMapper;
 
    @PostMapping("/save")
-   @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeacherResponseDto>> save(@Valid @RequestBody TeacherRequestDto teacherRequestDto){
 
         TeacherResponseDto savedTeacher = teacherService.saveTeacher(teacherRequestDto);
@@ -49,7 +45,7 @@ public class Teachercontroller {
    }
 
    @GetMapping
-   @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<ApiResponse<List<TeacherResponseDto>>> getallTeacher(){
 
        List<TeacherResponseDto> teachers = teacherService.teacherList();
@@ -65,7 +61,7 @@ public class Teachercontroller {
     }
 
    @DeleteMapping("/delete/{id}")
-   @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteById(@PathVariable int id){
        teacherService.deleteTeacher(id);
        ApiResponse<String> response =
@@ -79,7 +75,7 @@ public class Teachercontroller {
    }
 
    @PutMapping("/update/{id}")
-   @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<ApiResponse<TeacherResponseDto>> updateTeacher(@PathVariable int id,@Valid @RequestBody TeacherRequestDto teacherRequestDto) {
        TeacherResponseDto updateTeacher=teacherService.updateTeacher(id,teacherRequestDto);
        ApiResponse<TeacherResponseDto> response =
@@ -94,7 +90,7 @@ public class Teachercontroller {
 
 }
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeacherResponseDto>>
     getTeacherById(
             @PathVariable int id

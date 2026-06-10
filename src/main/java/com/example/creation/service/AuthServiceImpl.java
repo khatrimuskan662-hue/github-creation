@@ -5,9 +5,8 @@ import com.example.creation.dto.request.RegisterRequestDto;
 import com.example.creation.dto.response.AuthResponseDto;
 import com.example.creation.entity.Role;
 import com.example.creation.entity.UserEntity;
-import com.example.creation.exception.ResourseAlreadyExistException;
-import com.example.creation.exception.ResoursenotFoundException;
-import com.example.creation.mapper.UserMapper;
+import com.example.creation.exception.ResourceNotFoundException;
+import com.example.creation.exception.ResourceAlreadyExistsException;
 import com.example.creation.repository.RoleRepository;
 import com.example.creation.repository.UserRepository;
 import com.example.creation.security.JwtService;
@@ -33,9 +32,9 @@ public class AuthServiceImpl implements AuthService{
     public String register(RegisterRequestDto dto) {
        boolean emailExists=userRepository.findByEmail(dto.email()).isPresent();
        if(emailExists){
-           throw new ResourseAlreadyExistException("email already exist");
+           throw new ResourceNotFoundException("email already exist");
        }
-       Role role=roleRepository.findByRoleName(dto.role()).orElseThrow(() -> new ResoursenotFoundException(
+       Role role=roleRepository.findByRoleName(dto.role()).orElseThrow(() -> new ResourceAlreadyExistsException(
                "role not found"
        ));
        UserEntity user=new UserEntity();
@@ -59,12 +58,12 @@ public class AuthServiceImpl implements AuthService{
         );
         UserEntity user = userRepository.findByEmail(authREquestDto.email())
                 .orElseThrow(() ->
-                        new ResoursenotFoundException("Invalid email or password"));
+                        new ResourceAlreadyExistsException("Invalid email or password"));
 
         boolean passwordMatches =bCryptPasswordEncoder.matches(authREquestDto.password(),user.getPassword());
 
         if (!passwordMatches) {
-            throw new ResoursenotFoundException("Invalid email or password");
+            throw new ResourceAlreadyExistsException("Invalid email or password");
         }
 
         String token = jwtService.generateToken(user.getEmail());

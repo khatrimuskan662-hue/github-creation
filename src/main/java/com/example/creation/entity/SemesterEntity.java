@@ -20,6 +20,7 @@ public class SemesterEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String semesterName;
 
     @ManyToOne
@@ -33,8 +34,11 @@ public class SemesterEntity {
     @JsonManagedReference
     private List<SubjectEntity> subjects;
 
-    @OneToMany(mappedBy = "semester")
-    private List<StudentEntity> students;
+   // @OneToMany(mappedBy = "semester")
+    //private List<StudentEntity> students;
+
+    //@OneToMany(mappedBy = "semester")
+    //private List<TeacherEntity> teachers;
 }
 
 

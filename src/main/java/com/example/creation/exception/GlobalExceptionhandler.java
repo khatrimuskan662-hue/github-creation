@@ -10,13 +10,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionhandler { //throw error for resourse not found
-    @ExceptionHandler(ResoursenotFoundException.class)
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Object>> handleResourceNotFound(
-            ResoursenotFoundException ex
+            ResourceAlreadyExistsException ex
     ) {
 
         ApiResponse<Object> response = new ApiResponse<>(
@@ -48,9 +47,9 @@ public class GlobalExceptionhandler { //throw error for resourse not found
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(ResourseAlreadyExistException.class)// already exist error
+    @ExceptionHandler(ResourceNotFoundException.class)// already exist error
     public ResponseEntity<ApiResponse<Object>>
-    handleAlreadyExists(ResourseAlreadyExistException ex) {
+    handleAlreadyExists(ResourceNotFoundException ex) {
 
         ApiResponse<Object> response =
                 new ApiResponse<>(

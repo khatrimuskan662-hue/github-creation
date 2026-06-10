@@ -12,9 +12,9 @@ public interface FacultyMapper {
 
     @Mapping(target = "semesters", ignore = true)
 
-    @Mapping(target = "teachers", ignore = true)
+   // @Mapping(target = "teachers", ignore = true)
 
-    @Mapping(target = "students", ignore = true)
+   // @Mapping(target = "students", ignore = true)
     FacultyEntity toEntity(FacultyRequestDto facultyRequestDto);
-    FacultyResponseDto toResponse(FacultyEntity facultyEntity);
+    FacultyResponseDto toResponse(FacultyEntity faculty);
 }

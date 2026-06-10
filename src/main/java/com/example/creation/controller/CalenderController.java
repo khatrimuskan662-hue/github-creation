@@ -21,7 +21,7 @@ public class CalenderController {
     private final CalenderService calenderService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<CalenderResponseDto>> createEvent
             (@Valid @RequestBody CalenderRequestDto dto){
         CalenderResponseDto event=calenderService.createEvent(dto);
@@ -35,7 +35,7 @@ public class CalenderController {
         return ResponseEntity.ok(response);
     }
 @GetMapping
-@PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
+@PreAuthorize("hasRole('ADMIN')")
 
     public ResponseEntity<ApiResponse<List<CalenderResponseDto>>> getAllEvents(){
         List<CalenderResponseDto> allEvent=calenderService.getAllEvents();
@@ -49,7 +49,7 @@ public class CalenderController {
 }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<ApiResponse<CalenderResponseDto>> getEventById(
             @PathVariable int id
     ){
@@ -64,7 +64,7 @@ public class CalenderController {
     }
 
     @PatchMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<ApiResponse<CalenderResponseDto>> updateEvent(@Valid @PathVariable
             int id, @RequestBody CalenderRequestDto dto){
         CalenderResponseDto updateEvent=calenderService.updateEvent(id, dto);
@@ -78,7 +78,7 @@ public class CalenderController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
    public void deleteEvent(
             @PathVariable int id){
         calenderService.deleteEvent(id);

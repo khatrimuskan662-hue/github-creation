@@ -20,7 +20,7 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<SubjectResponseDto>> createSubject(
             @Valid @RequestBody SubjectRequestDto subjectRequestDto
             ){
@@ -35,7 +35,7 @@ public class SubjectController {
     }
 
 @GetMapping
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<ApiResponse<List<SubjectResponseDto>>>
 getAllSubject() {
 
@@ -53,7 +53,7 @@ getAllSubject() {
 }
 
 @GetMapping("/{id}")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<ApiResponse<SubjectResponseDto>>
 getSubjectById(
         @PathVariable int id
@@ -73,7 +73,7 @@ getSubjectById(
 }
 
 @PutMapping("/{id}")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<ApiResponse<SubjectResponseDto>>
 updateSubject(
         @PathVariable int id,
@@ -94,7 +94,7 @@ updateSubject(
 }
 
 @DeleteMapping("/{id}")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<ApiResponse<Object>>
 deleteSubject(
         @PathVariable int id

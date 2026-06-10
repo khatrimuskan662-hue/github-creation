@@ -4,13 +4,12 @@ import com.example.creation.dto.request.SubjectRequestDto;
 import com.example.creation.dto.response.SubjectResponseDto;
 import com.example.creation.entity.SemesterEntity;
 import com.example.creation.entity.SubjectEntity;
-import com.example.creation.exception.ResourseAlreadyExistException;
-import com.example.creation.exception.ResoursenotFoundException;
+import com.example.creation.exception.ResourceNotFoundException;
+import com.example.creation.exception.ResourceAlreadyExistsException;
 import com.example.creation.mapper.SubjectMapper;
 import com.example.creation.repository.SemesterRepository;
 import com.example.creation.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +25,13 @@ public class SubjectServiceImpl implements SubjectService{
     @Override
     public SubjectResponseDto createSubject(SubjectRequestDto subjectRequestDto) {
         SemesterEntity semester=semesterRepository.findById(subjectRequestDto.semesterId()).orElseThrow(() ->
-                new ResoursenotFoundException("semester not found"));
+                new ResourceAlreadyExistsException("semester not found"));
 
-        boolean exists=subjectRepository.existsBySubjectNameAndSemester_id(subjectRequestDto.subjectName(),subjectRequestDto.semesterId());
+        boolean exists=subjectRepository.existsBySubjectNameAndSemester_Id(
+                subjectRequestDto.subjectName(),subjectRequestDto.semesterId());
 
         if (exists){
-            throw new ResourseAlreadyExistException("subject already exist");
-
-
-
+            throw new ResourceNotFoundException("subject already exist");
         }
         SubjectEntity subject=new SubjectEntity();
         subject.setSubjectName(subjectRequestDto.subjectName());
@@ -62,7 +59,7 @@ public class SubjectServiceImpl implements SubjectService{
         SubjectEntity subject =
                 subjectRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Subject not found"
                                 ));
 
@@ -79,7 +76,7 @@ public class SubjectServiceImpl implements SubjectService{
         SubjectEntity subject =
                 subjectRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Subject not found"
                                 ));
 
@@ -87,7 +84,7 @@ public class SubjectServiceImpl implements SubjectService{
                 semesterRepository.findById(
                         dto.semesterId()
                 ).orElseThrow(() ->
-                        new ResoursenotFoundException(
+                        new ResourceAlreadyExistsException(
                                 "Semester not found"
                         ));
 
@@ -112,7 +109,7 @@ public class SubjectServiceImpl implements SubjectService{
         SubjectEntity subject =
                 subjectRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Subject not found"
                                 ));
 

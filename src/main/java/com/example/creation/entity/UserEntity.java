@@ -19,13 +19,14 @@ public class UserEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
-
+    @Column(nullable = false)
         private String name;
 
-        @Column(unique = true)
+        @Column(unique = true, nullable = false)
         private String email;
 
         @JsonIgnore //don't appear in API response
+        @Column(nullable = false)
         private String password;
 
        @ManyToOne

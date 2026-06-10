@@ -22,10 +22,13 @@ public class FacultyEntity {
     @JsonManagedReference //
     private List<SemesterEntity> semesters;
 
-    @OneToMany(mappedBy = "faculty")
-    private List<TeacherEntity> teachers;
+   // @OneToMany(mappedBy = "faculty")
+   // private List<TeacherEntity> teachers;
 
-    @OneToMany(mappedBy = "faculty")
-    private List<StudentEntity> students;
+    //@OneToMany(mappedBy = "faculty")
+    //private List<SubjectEntity> subjects;
+
+    //@OneToMany(mappedBy = "faculty")
+    //private List<StudentEntity> students;
 
 }

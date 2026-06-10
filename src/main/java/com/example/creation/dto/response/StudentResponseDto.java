@@ -1,9 +1,11 @@
 package com.example.creation.dto.response;
 
+import java.util.List;
+
 public record StudentResponseDto(
 
         int id,
-        int userId,
+        //int userId,
 
         String name,
 
@@ -17,7 +19,9 @@ public record StudentResponseDto(
 
         int semesterId,
 
-        String semesterName
+        String semesterName,
+
+        List<String> subjects
 
        // String subjectName
 ) {

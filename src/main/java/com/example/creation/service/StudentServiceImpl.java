@@ -3,8 +3,8 @@ package com.example.creation.service;
 import com.example.creation.dto.request.StudentRequestDto;
 import com.example.creation.dto.response.StudentResponseDto;
 import com.example.creation.entity.*;
-import com.example.creation.exception.ResourseAlreadyExistException;
-import com.example.creation.exception.ResoursenotFoundException;
+import com.example.creation.exception.ResourceAlreadyExistsException;
+import com.example.creation.exception.ResourceNotFoundException;
 import com.example.creation.mapper.StudentMapper;
 import com.example.creation.mapper.UserMapper;
 import com.example.creation.repository.*;
@@ -29,17 +29,19 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public StudentResponseDto createStudent(StudentRequestDto studentRequestDto) {
 
-       // SubjectEntity subject=subjectRepository.findById(studentRequestDto.).orElseThrow(()->
-         //       new ResoursenotFoundException(
-           //             "subject not found"
-             //   ));
-        FacultyEntity faculty=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(() -> new ResoursenotFoundException(
+       List<SubjectEntity> subject=subjectRepository.findAllById(studentRequestDto.subjectIds());
+       if(subject.size() !=studentRequestDto.subjectIds().size()){
+           throw new ResourceNotFoundException(
+                   "some subject not foound"
+           );
+       }
+        FacultyEntity faculty=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(() -> new ResourceAlreadyExistsException(
                 "faculty not found"
         ));
-        SemesterEntity semester=semesterRepository.findById(studentRequestDto.semesterId()).orElseThrow(() -> new ResoursenotFoundException(
+        SemesterEntity semester=semesterRepository.findById(studentRequestDto.semesterId()).orElseThrow(() -> new ResourceAlreadyExistsException(
                 "semester not found"
         ));
-        Role role=roleRepository.findByRoleName("STUDENT").orElseThrow(()-> new ResoursenotFoundException(
+        Role role=roleRepository.findByRoleName("STUDENT").orElseThrow(()-> new ResourceAlreadyExistsException(
                 "role not found"
         ));
         UserEntity user=userMapper.toEntity(studentRequestDto);
@@ -51,7 +53,7 @@ public class StudentServiceImpl implements StudentService{
         StudentEntity studentEntity=new StudentEntity();
         //studentEntity.setRollNumber(studentRequestDto.rollNumber());
         studentEntity.setUser(saveUser);
-        //studentEntity.setSubjects(subject);
+        studentEntity.setSubjects(subject);
         studentEntity.setSemester(semester);
         studentEntity.setFaculty(faculty);
 
@@ -71,7 +73,7 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public StudentResponseDto getStudentById(int id) {
         StudentEntity studentEntity=studentRepository.findById(id).orElseThrow(
-                () -> new ResoursenotFoundException(
+                () -> new ResourceAlreadyExistsException(
                         "student not found"
                 )
         );
@@ -81,14 +83,14 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public StudentResponseDto updateStudentById(int id, StudentRequestDto studentRequestDto) {
         StudentEntity studentEntity=studentRepository.findById(id)
-                .orElseThrow(()-> new ResoursenotFoundException(
+                .orElseThrow(()-> new ResourceAlreadyExistsException(
                         "student not foound"
                 ));
         FacultyEntity facultyEntity=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(
-                ()-> new ResoursenotFoundException("faculty not found")
+                ()-> new ResourceAlreadyExistsException("faculty not found")
         );
         SemesterEntity semesterEntity=semesterRepository.findById(studentRequestDto.semesterId())
-                .orElseThrow(()-> new ResoursenotFoundException(
+                .orElseThrow(()-> new ResourceAlreadyExistsException(
                         "semester not found"
                 ));
         //SubjectEntity subject=subjectRepository.findById(studentRequestDto.).orElseThrow(()->
@@ -118,7 +120,7 @@ public class StudentServiceImpl implements StudentService{
     public void deleteStudent(int id) {
 
         StudentEntity studentEntity=studentRepository.findById(id)
-                .orElseThrow(()-> new ResoursenotFoundException(
+                .orElseThrow(()-> new ResourceAlreadyExistsException(
                         "student not found"
                 ));
         UserEntity user=studentEntity.getUser();

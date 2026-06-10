@@ -3,17 +3,14 @@ package com.example.creation.service;
 import com.example.creation.dto.request.TeacherRequestDto;
 import com.example.creation.dto.response.TeacherResponseDto;
 import com.example.creation.entity.*;
-import com.example.creation.exception.ResourseAlreadyExistException;
-import com.example.creation.exception.ResoursenotFoundException;
+import com.example.creation.exception.ResourceAlreadyExistsException;
 import com.example.creation.mapper.TeacherMapper;
 import com.example.creation.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -32,7 +29,7 @@ public class TeacherServiceImpl implements TeacherService {
     public TeacherResponseDto saveTeacher(TeacherRequestDto teacherRequestDto) {
 
             if(userRepository.existsByEmail(teacherRequestDto.email())){
-                throw new ResoursenotFoundException(
+                throw new ResourceAlreadyExistsException(
                         "email already exist"
                 );
             }
@@ -40,7 +37,7 @@ public class TeacherServiceImpl implements TeacherService {
                     facultyRepository.findById(
                             teacherRequestDto.facultyId()
                     ).orElseThrow(() ->
-                            new ResoursenotFoundException(
+                            new ResourceAlreadyExistsException(
                                     "Faculty not found"
                           ));
             List<SubjectEntity> subjects =
@@ -49,18 +46,18 @@ public class TeacherServiceImpl implements TeacherService {
                     );
 
             if (subjects.isEmpty()) {
-                throw new ResoursenotFoundException(
+                throw new ResourceAlreadyExistsException(
                         "Subjects not found"
                 );
             }
             if(subjects.size()!=teacherRequestDto.subjectIds().size()){
-                throw new ResoursenotFoundException(
+                throw new ResourceAlreadyExistsException(
                         "some subject not found"
                 );
             }
 
             Role role = roleRepository.findByRoleName("TEACHER")
-                    .orElseThrow(() -> new ResoursenotFoundException(
+                    .orElseThrow(() -> new ResourceAlreadyExistsException(
                             "role not found"
                     ));
 
@@ -112,7 +109,7 @@ public List<TeacherResponseDto> teacherList() {
     public String deleteTeacher(int id) {
         TeacherEntity teacher = teacherRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResoursenotFoundException("Teacher not found with id " + id));
+                        new ResourceAlreadyExistsException("Teacher not found with id " + id));
         UserEntity user=teacher.getUser();
         teacherRepository.delete(teacher);
         userRepository.delete(user);
@@ -127,7 +124,7 @@ public List<TeacherResponseDto> teacherList() {
         TeacherEntity teacher =
                 teacherRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Teacher not found"
                                 ));
 
@@ -135,7 +132,7 @@ public List<TeacherResponseDto> teacherList() {
                 facultyRepository.findById(
                         teacherRequestDto.facultyId()
                 ).orElseThrow(() ->
-                       new ResoursenotFoundException(
+                       new ResourceAlreadyExistsException(
                                 "Faculty not found"
                         ));
 
@@ -144,12 +141,12 @@ public List<TeacherResponseDto> teacherList() {
                         teacherRequestDto.subjectIds()
                );
         if (subjects.size() != teacherRequestDto.subjectIds().size()) {
-            throw new ResoursenotFoundException(
+            throw new ResourceAlreadyExistsException(
                     "Some subjects not found"
             );
         }
         Role role=roleRepository.findByRoleName("TEACHER")
-                .orElseThrow(()-> new ResoursenotFoundException(
+                .orElseThrow(()-> new ResourceAlreadyExistsException(
                         "role not found"
                 ));
 
@@ -176,7 +173,7 @@ public List<TeacherResponseDto> teacherList() {
         TeacherEntity teacher =
                 teacherRepository.findById(id)
                         .orElseThrow(() ->
-                                new ResoursenotFoundException(
+                                new ResourceAlreadyExistsException(
                                         "Teacher not found"
                                 ));
 

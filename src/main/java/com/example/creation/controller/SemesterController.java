@@ -20,7 +20,7 @@ public class SemesterController {
     private final SemesterService semesterService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<SemesterResponseDto>> createSemester(@Valid @RequestBody SemesterrequestDto semesterrequestDto){
         SemesterResponseDto semester=semesterService.createSemester(semesterrequestDto);
         ApiResponse<SemesterResponseDto> response=
@@ -32,7 +32,7 @@ public class SemesterController {
         return ResponseEntity.ok(response);
     }
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<SemesterResponseDto>>>
     getAllSemesters() {
 
@@ -50,7 +50,7 @@ public class SemesterController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<SemesterResponseDto>>
     getSemesterById(
             @PathVariable int id
@@ -70,7 +70,7 @@ public class SemesterController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<SemesterResponseDto>>
     updateSemester(
             @PathVariable int id,
@@ -91,7 +91,7 @@ public class SemesterController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Object>>
     deleteSemester(
             @PathVariable int id

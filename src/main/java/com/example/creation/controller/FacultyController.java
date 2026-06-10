@@ -19,7 +19,7 @@ public class FacultyController {
     private final FacultyService facultyService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<FacultyResponseDto>>
     createFaculty(
             @Valid @RequestBody FacultyRequestDto dto
@@ -38,7 +38,7 @@ public class FacultyController {
         return ResponseEntity.ok(response);
     }
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<FacultyResponseDto>>>
     getAllFaculties() {
 
@@ -56,7 +56,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<FacultyResponseDto>>
     getFacultyById(
             @PathVariable int id
@@ -76,7 +76,7 @@ public class FacultyController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<FacultyResponseDto>>
     updateFaculty(
             @PathVariable int id,
@@ -97,7 +97,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Object>>
     deleteFaculty(
             @PathVariable int id

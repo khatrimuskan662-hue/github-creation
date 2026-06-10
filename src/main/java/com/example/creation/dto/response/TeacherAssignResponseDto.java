@@ -6,8 +6,8 @@ public record TeacherAssignResponseDto(
         Integer teacherId,
         String teacherName,
 
-        Integer facultyId,
-        String facultyName,
+        //Integer facultyId,
+        //String facultyName,
 
         Integer subjectId,
         String subjectName,

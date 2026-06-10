@@ -3,7 +3,7 @@ package com.example.creation.service;
 import com.example.creation.dto.request.CalenderRequestDto;
 import com.example.creation.dto.response.CalenderResponseDto;
 import com.example.creation.entity.CalenderEvent;
-import com.example.creation.exception.ResoursenotFoundException;
+import com.example.creation.exception.ResourceAlreadyExistsException;
 import com.example.creation.mapper.CalenderMapper;
 import com.example.creation.repository.CalenderRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class CalenderServiceImpl implements CalenderService{
     @Override
     public CalenderResponseDto getEventById(int id) {
         CalenderEvent event=calenderRepository.findById(id).orElseThrow(()->
-                new ResoursenotFoundException("event not found"));
+                new ResourceAlreadyExistsException("event not found"));
 
         return calenderMapper.toResponse(event) ;
     }
@@ -41,7 +41,7 @@ public class CalenderServiceImpl implements CalenderService{
     @Override
     public CalenderResponseDto updateEvent(int id, CalenderRequestDto dto) {
         CalenderEvent event=calenderRepository.findById(id).orElseThrow(()->
-                new ResoursenotFoundException("event not found"));
+                new ResourceAlreadyExistsException("event not found"));
         event.setTitle(dto.title());
         event.setDescription(dto.description());
         event.setEventDate(dto.eventDate());
@@ -53,7 +53,7 @@ public class CalenderServiceImpl implements CalenderService{
     @Override
     public void deleteEvent(int id) {
         CalenderEvent event=calenderRepository.findById(id).orElseThrow(()->
-                new ResoursenotFoundException(
+                new ResourceAlreadyExistsException(
                         "event not found"
                 ));
         calenderRepository.deleteById(id);

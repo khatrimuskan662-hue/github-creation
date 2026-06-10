@@ -7,10 +7,10 @@ import com.example.creation.entity.SubjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentRepository extends JpaRepository<StudentEntity,Integer> {
-    boolean existsByFacultyAndSemester(
+   // boolean existsByFacultyAndSemester(
 
-             FacultyEntity faculty,
-             SemesterEntity semester
+            // FacultyEntity faculty,
+             //SemesterEntity semester
              //SubjectEntity subject
-    );
+  //  );
 }

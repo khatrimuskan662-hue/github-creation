@@ -7,6 +7,7 @@ import com.example.creation.service.TeacherAssignService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class TeacherAssignController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeacherAssignResponseDto>>
     assignTeacher(@Valid @RequestBody TeacherAssignRequestDto dto) {
 
@@ -35,6 +37,7 @@ public class TeacherAssignController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<TeacherAssignResponseDto>>>
     getAllAssign(){
         List<TeacherAssignResponseDto> responseDto=
@@ -49,6 +52,7 @@ public class TeacherAssignController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<TeacherAssignResponseDto>>
     getAssignById(@PathVariable int id){
         TeacherAssignResponseDto responseDto=
@@ -64,6 +68,7 @@ public class TeacherAssignController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteAssign(@PathVariable int id){
             teacherAssignService.deleteAssignment(id);
     }

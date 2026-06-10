@@ -18,6 +18,8 @@ public class SubjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
      private String subjectName;
 
      @ManyToOne
@@ -25,7 +27,19 @@ public class SubjectEntity {
     @JsonBackReference
     private SemesterEntity semester;
 
-     @ManyToMany(mappedBy = "subjects")
-    // @JoinColumn(name = "teacherId")
+
+    @ManyToMany(mappedBy = "subjects")
     private List<TeacherEntity> teachers;
+
+     //@ManyToOne
+    //@JoinColumn(name = "teacherId")
+    //private List<TeacherEntity> teacher;
+
+    //@ManyToOne
+    //@JoinColumn(name = "faculty_id")
+    //@JsonBackReference
+    //private FacultyEntity faculty;
+
+    //@OneToMany(mappedBy = "faculty")
+    //private List<SubjectEntity> subjects;
 }

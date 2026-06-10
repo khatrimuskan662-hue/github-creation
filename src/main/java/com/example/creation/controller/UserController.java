@@ -1,5 +1,6 @@
 package com.example.creation.controller;
 
+import com.example.creation.dto.request.AuthREquestDto;
 import com.example.creation.dto.response.ApiResponse;
 import com.example.creation.dto.response.RegesterResponseDto;
 import com.example.creation.service.UserService;
@@ -18,7 +19,7 @@ public class UserController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<RegesterResponseDto>>> getAllUsers(){
       List<RegesterResponseDto> users=userService.getAllUser();
 
@@ -31,7 +32,7 @@ public class UserController {
       return ResponseEntity.ok(response);
     }
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<ApiResponse<Object>> deleteById(@PathVariable Long id){
     userService.deleteById(id);
     ApiResponse<Object> response=
