@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface FacultyRepository extends JpaRepository<FacultyEntity,Integer> {
     Optional<FacultyEntity> findByFacultyName(String facultyName);
     boolean existsByFacultyName(String facultyName);
+    boolean existsByFacultyNameIgnoreCase(
+            String facultyName
+    );
 }

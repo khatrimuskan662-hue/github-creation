@@ -31,9 +31,16 @@ public class FacultyServiceImpl implements FacultyService{
                     "Faculty already exists"
             );
         }
+        if(facultyRepository.existsByFacultyNameIgnoreCase(
+                facultyRequestDto.facultyName().trim()
+        )){
+            throw new ResourceNotFoundException("faculty already exist");
+        }
 
         FacultyEntity faculty =
                 facultyMapper.toEntity(facultyRequestDto);
+        String facultyName= facultyRequestDto.facultyName()
+                .trim().toUpperCase();
 
         FacultyEntity savedFaculty =
                 facultyRepository.save(faculty);

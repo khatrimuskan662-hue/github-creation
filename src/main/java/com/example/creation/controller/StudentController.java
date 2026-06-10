@@ -7,6 +7,7 @@ import com.example.creation.repository.StudentRepository;
 import com.example.creation.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +36,20 @@ public class StudentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<List<StudentResponseDto>>> getAllStudent(){
-        List<StudentResponseDto> studentResponseDtoList=studentService.getAllStudent();
+    public ResponseEntity<ApiResponse<Page<StudentResponseDto>>> getAllStudent(
+            @RequestParam(defaultValue = "0")
+            int page,
 
-        ApiResponse<List<StudentResponseDto>> response=
+            @RequestParam(defaultValue = "5")
+            int size,
+
+             @RequestParam(defaultValue = "id")
+                    String sortBy
+    ){
+        Page<StudentResponseDto> studentResponseDtoList=
+                studentService.getAllStudent(page, size,sortBy);
+
+        ApiResponse<Page<StudentResponseDto>> response=
                 new ApiResponse<>(
                         true,
                         "student fetched sucessfully",

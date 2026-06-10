@@ -11,6 +11,9 @@ import com.example.creation.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -64,10 +67,11 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<StudentResponseDto> getAllStudent() {
-        return studentRepository.findAll().stream()
-                .map(studentMapper::toResponseDto)
-                .toList();
+    public Page<StudentResponseDto> getAllStudent(
+            int page,int size,String sortBy) {
+        return studentRepository.findAll(PageRequest.of(
+                page, size,Sort.by(sortBy)))
+                .map(studentMapper::toResponseDto);
     }
 
     @Override
