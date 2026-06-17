@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class StudentEntity {
+public class StudentEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -35,4 +35,6 @@ public class StudentEntity {
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
     private List<SubjectEntity> subjects;
+
+    private String photoPath;
 }

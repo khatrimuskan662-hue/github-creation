@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class SemesterEntity {
+public class SemesterEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

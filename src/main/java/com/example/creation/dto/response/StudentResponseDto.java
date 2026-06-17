@@ -1,17 +1,15 @@
 package com.example.creation.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record StudentResponseDto(
 
         int id,
-        //int userId,
 
         String name,
 
         String email,
-
-        //String rollNumber,
 
         int facultyId,
 
@@ -21,8 +19,12 @@ public record StudentResponseDto(
 
         String semesterName,
 
-        List<String> subjects
+        List<String> subjects,
+        LocalDateTime createdAt,
 
-       // String subjectName
+        LocalDateTime updatedAt,
+
+        String photoUrl
+
 ) {
 }

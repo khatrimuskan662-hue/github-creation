@@ -23,6 +23,12 @@ public interface StudentMapper {
             expression = "java(entity.getSubjects().stream()" +
                     ".map(subject -> subject.getSubjectName())" +
                     ".toList())")
+    @Mapping(
+            target = "photoUrl",
+            expression =
+                    "java(entity.getPhotoPath() == null ? null : "
+                            + "\"http://localhost:8081/uploads/\" + entity.getPhotoPath())"
+    )
     StudentResponseDto toResponseDto(
             StudentEntity entity
     );

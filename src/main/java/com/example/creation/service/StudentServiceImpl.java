@@ -9,13 +9,20 @@ import com.example.creation.mapper.StudentMapper;
 import com.example.creation.mapper.UserMapper;
 import com.example.creation.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Key;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +36,7 @@ public class StudentServiceImpl implements StudentService{
     private final StudentMapper studentMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SubjectRepository subjectRepository;
+    private final FileUploadService fileUploadService;
     @Override
     public StudentResponseDto createStudent(StudentRequestDto studentRequestDto) {
 
@@ -67,17 +75,28 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    @Cacheable("students")
     public Page<StudentResponseDto> getAllStudent(
-            int page,int size,String sortBy) {
+            int page,int size,String sortBy,String direction) {
+        Sort sort=direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).descending():
+                Sort.by(sortBy).ascending();
         return studentRepository.findAll(PageRequest.of(
-                page, size,Sort.by(sortBy)))
+                page, size,sort))
                 .map(studentMapper::toResponseDto);
     }
 
     @Override
+    @Cacheable(
+            value = "students",
+            key = "#id"
+    )
     public StudentResponseDto getStudentById(int id) {
+
+        System.out.println("DATABASE HIT");
+
         StudentEntity studentEntity=studentRepository.findById(id).orElseThrow(
-                () -> new ResourceAlreadyExistsException(
+                () -> new ResourceNotFoundException(
                         "student not found"
                 )
         );
@@ -85,22 +104,25 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    @CachePut(value = "students",key = "#id")
     public StudentResponseDto updateStudentById(int id, StudentRequestDto studentRequestDto) {
         StudentEntity studentEntity=studentRepository.findById(id)
-                .orElseThrow(()-> new ResourceAlreadyExistsException(
-                        "student not foound"
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "student not found"
                 ));
         FacultyEntity facultyEntity=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(
-                ()-> new ResourceAlreadyExistsException("faculty not found")
+                ()-> new ResourceNotFoundException("faculty not found")
         );
         SemesterEntity semesterEntity=semesterRepository.findById(studentRequestDto.semesterId())
-                .orElseThrow(()-> new ResourceAlreadyExistsException(
+                .orElseThrow(()-> new ResourceNotFoundException(
                         "semester not found"
                 ));
-        //SubjectEntity subject=subjectRepository.findById(studentRequestDto.).orElseThrow(()->
-          //      new ResoursenotFoundException(
-            //            "subject not found"
-              //  ));
+        List<SubjectEntity> subject=subjectRepository.findAllById(studentRequestDto.subjectIds());
+        if(subject.size() !=studentRequestDto.subjectIds().size()){
+            throw new ResourceNotFoundException(
+                    "some subject not foound"
+            );
+        }
         UserEntity userEntity=studentEntity.getUser();
         userEntity.setName(userEntity.getName());
         userEntity.setEmail(userEntity.getEmail());
@@ -113,7 +135,7 @@ public class StudentServiceImpl implements StudentService{
         studentEntity.setUser(userEntity);
         studentEntity.setFaculty(facultyEntity);
         studentEntity.setSemester(semesterEntity);
-       // studentEntity.setSubjects(subject);
+        studentEntity.setSubjects(subject);
 
 
         StudentEntity updateStudent=studentRepository.save(studentEntity);
@@ -121,15 +143,60 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    @CacheEvict(value = "students",key = "#id")
     public void deleteStudent(int id) {
 
-        StudentEntity studentEntity=studentRepository.findById(id)
+        StudentEntity student=studentRepository.findById(id)
                 .orElseThrow(()-> new ResourceAlreadyExistsException(
                         "student not found"
                 ));
-        UserEntity user=studentEntity.getUser();
-        studentRepository.delete(studentEntity);
+       // student.setDeleted(true);
+       // student.getUser().setDeleted(true);
+       // studentRepository.save(student);
+       // userRepository.save(student.getUser());
+
+
+        UserEntity user=student.getUser();
+        studentRepository.delete(student);
         userRepository.delete(user);
 
     }
-}
+
+   @Override
+    public List<StudentResponseDto> searchStudent(String keyword) {
+        return studentRepository.findByUser_NameContainingIgnoreCase(
+               keyword
+        ).stream().map(studentMapper::toResponseDto).toList();
+   }
+
+    @Override
+    public StudentResponseDto uploadPhoto(int studentId, MultipartFile file) {
+
+        StudentEntity student =
+                studentRepository.findById(studentId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Student not found"
+                                ));
+
+        try {
+
+            String fileName =
+                    fileUploadService.uploadFile(file);
+
+            student.setPhotoPath(fileName);
+
+            StudentEntity saved =
+                    studentRepository.save(student);
+
+            return studentMapper.toResponseDto(saved);
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "File upload failed"
+            );
+        }
+
+
+    }}

@@ -23,9 +23,9 @@ public class LeaveController {
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ApiResponse<LeaveResponseDto>> applyLeavve(
             @Valid @RequestBody LeaveRequestDto dto
-            ){
-        LeaveResponseDto responseDto=leaveservice.applyLeave(dto);
-        ApiResponse<LeaveResponseDto> response=
+    ) {
+        LeaveResponseDto responseDto = leaveservice.applyLeave(dto);
+        ApiResponse<LeaveResponseDto> response =
                 new ApiResponse<>(
                         true,
                         "leave sucessfully applied",
@@ -36,9 +36,9 @@ public class LeaveController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<List<LeaveResponseDto>>> getAllLeaves(){
-        List<LeaveResponseDto> responseDtos=leaveservice.getAllLeaves();
-        ApiResponse<List<LeaveResponseDto>> response=
+    public ResponseEntity<ApiResponse<List<LeaveResponseDto>>> getAllLeaves() {
+        List<LeaveResponseDto> responseDtos = leaveservice.getAllLeaves();
+        ApiResponse<List<LeaveResponseDto>> response =
                 new ApiResponse<>(
                         true,
                         "fetched all applied leave",
@@ -51,9 +51,9 @@ public class LeaveController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<LeaveResponseDto>> approve(
             @PathVariable Integer id
-    ){
-        LeaveResponseDto leaveApprove=leaveservice.approveLeave(id);
-        ApiResponse<LeaveResponseDto> response=
+    ) {
+        LeaveResponseDto leaveApprove = leaveservice.approveLeave(id);
+        ApiResponse<LeaveResponseDto> response =
                 new ApiResponse<>(
                         true,
                         "leave approved",
@@ -66,9 +66,9 @@ public class LeaveController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<LeaveResponseDto>> reject(
             @PathVariable Integer id
-    ){
-        LeaveResponseDto leaveReject=leaveservice.rejectLeave(id);
-        ApiResponse<LeaveResponseDto> response=
+    ) {
+        LeaveResponseDto leaveReject = leaveservice.rejectLeave(id);
+        ApiResponse<LeaveResponseDto> response =
                 new ApiResponse<>(
                         true,
                         "leave rejected",

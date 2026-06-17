@@ -50,7 +50,9 @@ public class SecurityConfig {
                                 // /api/auth/register
                                 // /api/auth/login
                                 // no token needed
-                                "/api/auth/**"
+                                "/api/auth/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
                                 // else JWT required
                         ).permitAll()
 

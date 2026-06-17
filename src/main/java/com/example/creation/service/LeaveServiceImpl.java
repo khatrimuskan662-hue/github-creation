@@ -32,7 +32,7 @@ public class LeaveServiceImpl implements Leaveservice{
         leave.setLeaveType(dto.leaveType());
         leave.setReason(dto.reason());
 
-        leave.setStatus(LeaveStatus.valueOf("PENDING"));
+        leave.setStatus(LeaveStatus.PENDING);
         LeaveEntity saved=leaveRepository.save(leave);
 
         return leaveMapper.toResponseDto(saved);
@@ -50,7 +50,7 @@ public class LeaveServiceImpl implements Leaveservice{
         LeaveEntity leave=leaveRepository.findById(leaveId).orElseThrow(
                 ()-> new ResourceNotFoundException("leave not found")
         );
-        leave.setStatus(LeaveStatus.valueOf("APPROVED"));
+        leave.setStatus(LeaveStatus.APPROVED);
         return leaveMapper.toResponseDto(leaveRepository.save(leave));
     }
 
@@ -59,7 +59,7 @@ public class LeaveServiceImpl implements Leaveservice{
         LeaveEntity leave=leaveRepository.findById(leaveId).orElseThrow(
                 ()->new ResourceNotFoundException("leave not found")
         );
-        leave.setStatus(LeaveStatus.valueOf("REJECTED"));
+        leave.setStatus(LeaveStatus.REJECTED);
         return leaveMapper.toResponseDto(leaveRepository.save(leave));
     }
 }

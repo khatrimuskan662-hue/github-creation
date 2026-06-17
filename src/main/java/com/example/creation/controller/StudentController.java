@@ -3,6 +3,7 @@ package com.example.creation.controller;
 import com.example.creation.dto.request.StudentRequestDto;
 import com.example.creation.dto.response.ApiResponse;
 import com.example.creation.dto.response.StudentResponseDto;
+import com.example.creation.entity.StudentEntity;
 import com.example.creation.repository.StudentRepository;
 import com.example.creation.service.StudentService;
 import jakarta.validation.Valid;
@@ -23,9 +24,9 @@ public class StudentController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<StudentResponseDto>> createStudent(@Valid @RequestBody StudentRequestDto studentRequestDto){
-        StudentResponseDto studentResponseDto=studentService.createStudent(studentRequestDto);
-        ApiResponse<StudentResponseDto> response=
+    public ResponseEntity<ApiResponse<StudentResponseDto>> createStudent(@Valid @RequestBody StudentRequestDto studentRequestDto) {
+        StudentResponseDto studentResponseDto = studentService.createStudent(studentRequestDto);
+        ApiResponse<StudentResponseDto> response =
                 new ApiResponse<>(
                         true,
                         "student created sucessfully",
@@ -43,13 +44,15 @@ public class StudentController {
             @RequestParam(defaultValue = "5")
             int size,
 
-             @RequestParam(defaultValue = "id")
-                    String sortBy
-    ){
-        Page<StudentResponseDto> studentResponseDtoList=
-                studentService.getAllStudent(page, size,sortBy);
+            @RequestParam(defaultValue = "id")
+            String sortBy,
+            @RequestParam(defaultValue = "asc")
+            String direction
+    ) {
+        Page<StudentResponseDto> studentResponseDtoList =
+                studentService.getAllStudent(page, size, sortBy, direction);
 
-        ApiResponse<Page<StudentResponseDto>> response=
+        ApiResponse<Page<StudentResponseDto>> response =
                 new ApiResponse<>(
                         true,
                         "student fetched sucessfully",
@@ -57,6 +60,7 @@ public class StudentController {
                 );
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StudentResponseDto>>
@@ -76,6 +80,7 @@ public class StudentController {
 
         return ResponseEntity.ok(response);
     }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StudentResponseDto>>
@@ -85,7 +90,7 @@ public class StudentController {
     ) {
 
         StudentResponseDto student =
-                studentService.updateStudentById(id,dto);
+                studentService.updateStudentById(id, dto);
 
         ApiResponse<StudentResponseDto> response =
                 new ApiResponse<>(
@@ -96,6 +101,7 @@ public class StudentController {
 
         return ResponseEntity.ok(response);
     }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Object>>
@@ -112,6 +118,18 @@ public class StudentController {
                         null
                 );
 
+        return ResponseEntity.ok(response);
+    }
+
+   @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<StudentResponseDto>>>
+    searchStudent(@RequestParam String keyword) {
+       ApiResponse<List<StudentResponseDto>> response =
+                new ApiResponse<>(
+                        true,
+                        "student found",
+                        studentService.searchStudent(keyword)
+                );
         return ResponseEntity.ok(response);
     }
 
