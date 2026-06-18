@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 public class LeaveEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Integer id;
 
     private LocalDate fromDate;

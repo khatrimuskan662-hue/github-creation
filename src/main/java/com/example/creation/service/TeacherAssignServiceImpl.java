@@ -45,8 +45,8 @@ public class TeacherAssignServiceImpl implements TeacherAssignService{
        // teacherassignment.setFaculty(faculty);
         teacherassignment.setSemester(semester);
         teacherassignment.setSubject(subject);
-        if(teacherAssignmentRepository.existsByTeacherAndSubjectAndSemester(
-                teacher,subject,semester
+        if(teacherAssignmentRepository.existsByTeacher_IdAndSubject_IdAndSemester_Id(
+                requestDto.teacherId(), requestDto.subjectId(), requestDto.semesterId()
         )){
             throw new ResourceNotFoundException(
                     "Teacher already assigned"

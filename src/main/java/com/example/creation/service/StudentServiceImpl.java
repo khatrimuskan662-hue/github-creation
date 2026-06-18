@@ -40,18 +40,24 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public StudentResponseDto createStudent(StudentRequestDto studentRequestDto) {
 
-       List<SubjectEntity> subject=subjectRepository.findAllById(studentRequestDto.subjectIds());
-       if(subject.size() !=studentRequestDto.subjectIds().size()){
-           throw new ResourceNotFoundException(
-                   "some subject not foound"
-           );
-       }
         FacultyEntity faculty=facultyRepository.findById(studentRequestDto.facultyId()).orElseThrow(() -> new ResourceAlreadyExistsException(
                 "faculty not found"
         ));
         SemesterEntity semester=semesterRepository.findById(studentRequestDto.semesterId()).orElseThrow(() -> new ResourceAlreadyExistsException(
                 "semester not found"
         ));
+       List<SubjectEntity> subject=subjectRepository.findAllById(studentRequestDto.subjectIds());
+       if(subject.size() !=studentRequestDto.subjectIds().size()){
+           throw new ResourceNotFoundException(
+                   "some subject not foound"
+           );
+       }
+       boolean emailExist=userRepository.existsByEmail(studentRequestDto.email());
+       if(emailExist){
+           throw new ResourceAlreadyExistsException("email already exist");
+       }
+
+
         Role role=roleRepository.findByRoleName("STUDENT").orElseThrow(()-> new ResourceAlreadyExistsException(
                 "role not found"
         ));

@@ -24,6 +24,8 @@ public record StudentRequestDto(
         @NotNull(message = "Semester id is required")
         Integer semesterId,
 
-        List<Integer>subjectIds
+        List<Integer>subjectIds,
+
+        String photoPath
 ) {
 }

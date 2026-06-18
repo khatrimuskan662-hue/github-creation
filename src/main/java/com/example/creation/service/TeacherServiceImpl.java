@@ -4,6 +4,7 @@ import com.example.creation.dto.request.TeacherRequestDto;
 import com.example.creation.dto.response.TeacherResponseDto;
 import com.example.creation.entity.*;
 import com.example.creation.exception.ResourceAlreadyExistsException;
+import com.example.creation.exception.ResourceNotFoundException;
 import com.example.creation.mapper.TeacherMapper;
 import com.example.creation.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -46,12 +47,12 @@ public class TeacherServiceImpl implements TeacherService {
                     );
 
             if (subjects.isEmpty()) {
-                throw new ResourceAlreadyExistsException(
+                throw new ResourceNotFoundException(
                         "Subjects not found"
                 );
             }
             if(subjects.size()!=teacherRequestDto.subjectIds().size()){
-                throw new ResourceAlreadyExistsException(
+                throw new ResourceNotFoundException(
                         "some subject not found"
                 );
             }
